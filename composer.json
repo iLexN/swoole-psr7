@@ -1,0 +1,43 @@
+{
+    "name": "ilexn/swoole-server",
+    "authors": [
+        {
+            "name": "iLexN",
+            "email": "ilex.job@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-swoole": "*",
+        "dflydev/fig-cookies": "^2.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "require-dev": {
+        "slim/slim": "4.x-dev",
+        "phpstan/phpstan": "^0.11.0",
+        "phpstan/phpstan-phpunit": "^0.11.0",
+        "phpstan/phpstan-strict-rules": "^0.11.0",
+        "nyholm/psr7": "^1.1",
+        "symplify/easy-coding-standard": "^5.4",
+        "eaglewu/swoole-ide-helper": "dev-master",
+        "symfony/var-dumper": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ilex\\SwooleServer\\" : "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ilex\\SwooleServer\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit --coverage-text",
+        "cs-check": "ecs check src tests",
+        "cs-fix": "ecs check src tests --fix",
+        "bug-check": "phpstan analyse -l max src tests"
+    }
+}
