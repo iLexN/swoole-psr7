@@ -5,6 +5,7 @@ php:
   - 7.3
 
 before_script:
+  - chmod +x ./.travis/install_swoole.sh
   - "./.travis/install_swoole.sh"
   - composer install --prefer-source --no-interaction
   - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then composer require php-coveralls/php-coveralls -n ; fi
