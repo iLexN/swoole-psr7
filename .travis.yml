@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+
+before_script:
+  - sh -c "mkdir -p ${TRAVIS_BUILD_DIR}/.travis/module-cache/$(php-config --vernum)"
+  - MODULES="swoole.so:swoole" ./.travis/modulecache.sh
+  - composer install --prefer-source --no-interaction
+    - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then composer require php-coveralls/php-coveralls -n ; fi
+
+script:
+  - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then mkdir -p build/logs && vendor/bin/phpunit --coverage-clover build/logs/clover.xml ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != '7.2' ]]; then vendor/bin/phpunit ; fi
+
+after_script:
+  - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml ; fi

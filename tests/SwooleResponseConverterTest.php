@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ilex\SwooleServer\Tests;
+namespace Ilex\SwoolePsr7\Tests;
 
-use Ilex\SwooleServer\SwooleResponseConverter;
+use Ilex\SwoolePsr7\SwooleResponseConverter;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

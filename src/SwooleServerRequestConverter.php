@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ilex\SwooleServer;
+namespace Ilex\SwoolePsr7;
 
-use Ilex\SwooleServer\Utility\ParseUploadedFiles;
-use Ilex\SwooleServer\Utility\ParseUriFromSwoole;
+use Ilex\SwoolePsr7\Utility\ParseUploadedFiles;
+use Ilex\SwoolePsr7\Utility\ParseUriFromSwoole;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;

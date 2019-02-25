@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ilex\SwooleServer\Utility;
+namespace Ilex\SwoolePsr7\Utility;
 
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
@@ -56,7 +56,7 @@ final class ParseUploadedFiles
             } else {
                 $subArray = [];
                 $k = array_keys($uploadedFile['error']);
-                foreach ($k as $fileIdx){
+                foreach ($k as $fileIdx) {
                     $subArray[$fileIdx]['name'] = $uploadedFile['name'][$fileIdx];
                     $subArray[$fileIdx]['type'] = $uploadedFile['type'][$fileIdx];
                     $subArray[$fileIdx]['tmp_name'] = $uploadedFile['tmp_name'][$fileIdx];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ilex\SwooleServer\Utility;
+namespace Ilex\SwoolePsr7\Utility;
 
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ilex\SwooleServer;
+namespace Ilex\SwoolePsr7;
 
 use Dflydev\FigCookies\SetCookies;
 use Psr\Http\Message\ResponseInterface;
