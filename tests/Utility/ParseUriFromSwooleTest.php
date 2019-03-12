@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Ilex\SwoolePsr7\Utility;
+namespace Ilex\SwoolePsr7\Tests\Utility;
 
 use Ilex\SwoolePsr7\Tests\SwooleRequestFactory;
+use Ilex\SwoolePsr7\Utility\ParseUriFromSwoole;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
@@ -23,7 +25,7 @@ class ParseUriFromSwooleTest extends TestCase
         self::assertInstanceOf(UriInterface::class, $uri);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $factory = new Psr17Factory();
         $testObject = new ParseUriFromSwoole($factory);
@@ -34,7 +36,7 @@ class ParseUriFromSwooleTest extends TestCase
 
         self::assertEquals('/hello/aaaaa', $uri->getPath());
         self::assertEquals('swoole.loc', $uri->getHost());
-        self::assertEquals('a=b&c=d',$uri->getQuery());
-        self::assertEquals('http',$uri->getScheme());
+        self::assertEquals('a=b&c=d', $uri->getQuery());
+        self::assertEquals('http', $uri->getScheme());
     }
 }
