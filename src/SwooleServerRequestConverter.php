@@ -63,7 +63,7 @@ final class SwooleServerRequestConverter
         $method = $server['request_method'] ?? 'GET';
         $headers = $swooleRequest->header ?? [];
         $uri = $this->parseUri($swooleRequest);
-
+        dump($server);
         $serverRequest = $this->serverRequestFactory->createServerRequest(
             $method,
             $uri,
@@ -86,6 +86,9 @@ final class SwooleServerRequestConverter
         ServerRequestInterface $serverRequest
     ): ServerRequestInterface {
         foreach ($headers as $name => $value) {
+            if ($serverRequest->hasHeader($name)) {
+                continue;
+            }
             $serverRequest = $serverRequest->withAddedHeader($name, $value);
         }
         return $serverRequest;
@@ -129,6 +132,9 @@ final class SwooleServerRequestConverter
      */
     private function parseUploadedFiles(array $uploadedFiles): array
     {
-        return (new ParseUploadedFiles($this->uploadedFileFactory, $this->streamFactory))->parseUploadedFiles($uploadedFiles);
+        return (new ParseUploadedFiles(
+            $this->uploadedFileFactory,
+            $this->streamFactory
+        ))->parseUploadedFiles($uploadedFiles);
     }
 }

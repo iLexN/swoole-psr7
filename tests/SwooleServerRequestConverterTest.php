@@ -107,7 +107,7 @@ class SwooleServerRequestConverterTest extends TestCase
         $this->assertTrue($request->hasHeader('Content-Type'));
         $this->assertEquals('application/json', $request->getHeaderLine('Content-Type'));
         $this->assertTrue($request->hasHeader('Host'));
-        //$this->assertEquals('localhost:9501', $request->getHeaderLine('Host'));
+        $this->assertEquals('localhost:9501', $request->getHeaderLine('Host'));
         $this->assertTrue($request->hasHeader('Cookie'));
         $this->assertEquals('yummy_cookie=choco; tasty_cookie=strawberry', $request->getHeaderLine('Cookie'));
         $this->assertEquals(['foo' => 'bar'], $request->getQueryParams());
@@ -128,7 +128,6 @@ class SwooleServerRequestConverterTest extends TestCase
         $this->assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
         $this->assertEquals(filesize(__FILE__), $uploadedFile->getSize());
         $this->assertEquals(UPLOAD_ERR_OK, $uploadedFile->getError());
-        $contents = (string) $uploadedFile->getStream();
         $body = $request->getBody();
         $this->assertInstanceOf(StreamInterface::class, $body);
         $this->assertEquals('this is the content', (string) $body);
