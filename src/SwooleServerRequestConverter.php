@@ -63,7 +63,7 @@ final class SwooleServerRequestConverter
         $method = $server['request_method'] ?? 'GET';
         $headers = $swooleRequest->header ?? [];
         $uri = $this->parseUri($swooleRequest);
-        dump($server);
+
         $serverRequest = $this->serverRequestFactory->createServerRequest(
             $method,
             $uri,
