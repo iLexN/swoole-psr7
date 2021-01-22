@@ -13,21 +13,13 @@ final class SwooleResponseConverter
     /**
      * @see https://www.swoole.co.uk/docs/modules/swoole-http-server/methods-properties#swoole-http-response-write
      */
-    public const CHUNK_SIZE = 2097152; // 2 MB
-
-    /**
-     * @var \Swoole\Http\Response
-     */
-    private $swooleResponse;
+    public const CHUNK_SIZE = 2097152;
 
     /**
      * SwooleResponseConverter constructor.
-     *
-     * @param \Swoole\Http\Response $response
      */
-    public function __construct(Response $response)
+    public function __construct(private Response $swooleResponse)
     {
-        $this->swooleResponse = $response;
     }
 
     public function convertFromPsr7Response(ResponseInterface $response): void
@@ -86,8 +78,8 @@ final class SwooleResponseConverter
                 $cookie->getName(),
                 $cookie->getValue(),
                 $cookie->getExpires(),
-                $cookie->getPath() ?: '/',
-                $cookie->getDomain() ?: '',
+                $cookie->getPath() ?? '/',
+                $cookie->getDomain() ?? '',
                 $cookie->getSecure(),
                 $cookie->getHttpOnly()
             );

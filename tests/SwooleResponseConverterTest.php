@@ -12,10 +12,11 @@ use Swoole\Http\Response as SwooleHttpResponse;
 
 class SwooleResponseConverterTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var SwooleResponseConverter
      */
-    private $emitter;
+    private SwooleResponseConverter $emitter;
 
     private $swooleResponse;
 

@@ -17,43 +17,10 @@ use Swoole\Http\Request;
 final class SwooleServerRequestConverter
 {
     /**
-     * @var \Psr\Http\Message\ServerRequestFactoryInterface
-     */
-    private $serverRequestFactory;
-
-    /**
-     * @var \Psr\Http\Message\UriFactoryInterface
-     */
-    private $uriFactory;
-
-    /**
-     * @var \Psr\Http\Message\UploadedFileFactoryInterface
-     */
-    private $uploadedFileFactory;
-
-    /**
-     * @var \Psr\Http\Message\StreamFactoryInterface
-     */
-    private $streamFactory;
-
-    /**
      * SwooleServerRequestConverter constructor.
-     *
-     * @param \Psr\Http\Message\ServerRequestFactoryInterface $serverRequestFactory
-     * @param \Psr\Http\Message\UriFactoryInterface $uriFactory
-     * @param \Psr\Http\Message\UploadedFileFactoryInterface $uploadedFileFactory
-     * @param \Psr\Http\Message\StreamFactoryInterface $streamFactory
      */
-    public function __construct(
-        ServerRequestFactoryInterface $serverRequestFactory,
-        UriFactoryInterface $uriFactory,
-        UploadedFileFactoryInterface $uploadedFileFactory,
-        StreamFactoryInterface $streamFactory
-    ) {
-        $this->serverRequestFactory = $serverRequestFactory;
-        $this->uriFactory = $uriFactory;
-        $this->uploadedFileFactory = $uploadedFileFactory;
-        $this->streamFactory = $streamFactory;
+    public function __construct(private ServerRequestFactoryInterface $serverRequestFactory, private UriFactoryInterface $uriFactory, private UploadedFileFactoryInterface $uploadedFileFactory, private StreamFactoryInterface $streamFactory)
+    {
     }
 
     public function createFromSwoole(
@@ -77,7 +44,7 @@ final class SwooleServerRequestConverter
             ->withCookieParams($swooleRequest->cookie ?? [])
             ->withQueryParams($swooleRequest->get ?? [])
             ->withParsedBody($swooleRequest->post ?? [])
-            ->withBody($this->streamFactory->createStream($swooleRequest->rawcontent() ?: ''))
+            ->withBody($this->streamFactory->createStream($swooleRequest->rawContent()))
             ->withUploadedFiles($this->parseUploadedFiles($swooleRequest->files ?? []));
     }
 

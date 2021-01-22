@@ -64,7 +64,7 @@ final class ParseUriFromSwoole
 
     private function parseHeaderHost(array $header): void
     {
-        if (\strpos($header['host'], ':') !== false) {
+        if (str_contains($header['host'], ':')) {
             [$host, $port] = explode(':', $header['host'], 2);
             if ($port !== '80') {
                 $this->uri = $this->uri->withPort((int)$port);

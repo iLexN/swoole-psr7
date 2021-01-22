@@ -9,20 +9,8 @@ use Psr\Http\Message\UploadedFileFactoryInterface;
 
 final class ParseUploadedFiles
 {
-    /**
-     * @var \Psr\Http\Message\UploadedFileFactoryInterface
-     */
-    private $uploadedFileFactory;
-
-    /**
-     * @var \Psr\Http\Message\StreamFactoryInterface
-     */
-    private $streamFactory;
-
-    public function __construct(UploadedFileFactoryInterface $uploadedFileFactory, StreamFactoryInterface $streamFactory)
+    public function __construct(private UploadedFileFactoryInterface $uploadedFileFactory, private StreamFactoryInterface $streamFactory)
     {
-        $this->uploadedFileFactory = $uploadedFileFactory;
-        $this->streamFactory = $streamFactory;
     }
 
     /**
