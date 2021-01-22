@@ -41,6 +41,7 @@
         "test-coverage" : "phpunit --coverage-text",
         "cs-check": "ecs check src tests",
         "cs-fix": "ecs check src tests --fix",
-        "bug-check": "phpstan analyse -l max src"
+        "bug-check": "phpstan analyse -l max src",
+        "rector-check": "rector process src --config rector.php --dry-run"
     }
 }
