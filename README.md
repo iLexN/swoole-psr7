@@ -1,6 +1,6 @@
 # SwoolePsr7
 
-[![Build Status](https://travis-ci.org/iLexN/swoole-psr7.svg?branch=master)](https://travis-ci.org/iLexN/swoole-psr7)
+![CI Check](https://github.com/iLexN/swoole-psr7/workflows/CI%20Check/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/iLexN/swoole-psr7/badge.svg?branch=master)](https://coveralls.io/github/iLexN/swoole-psr7?branch=master)
 
 Use any PSR 17 Factory to convent to PSR 7 Response/Request.
