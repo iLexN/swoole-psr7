@@ -1,5 +1,8 @@
 # SwoolePsr7
 
+[![Latest Stable Version](https://poser.pugx.org/ilexn/swoole-convent-psr7/v/stable)](https://packagist.org/packages/ilexn/swoole-convent-psr7)
+[![Total Downloads](https://poser.pugx.org/ilexn/swoole-convent-psr7/downloads)](https://packagist.org/packages/ilexn/swoole-convent-psr7)
+
 ![CI Check](https://github.com/iLexN/swoole-psr7/workflows/CI%20Check/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/iLexN/swoole-psr7/badge.svg?branch=master)](https://coveralls.io/github/iLexN/swoole-psr7?branch=master)
 
