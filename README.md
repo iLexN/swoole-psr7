@@ -19,7 +19,7 @@ $ composer require ilexn/swoole-convent-psr7
 ```
 
 ## Usage
-use Slim 4 and Nyholm\Psr7\Factory\Psr17Factory as example
+use [Slim 4](https://github.com/slimphp/Slim) and [Nyholm/psr7](https://github.com/Nyholm/psr7) as example.
 ``` php
 <?php
 declare(strict_types=1);
