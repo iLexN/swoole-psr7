@@ -44,12 +44,12 @@ final class ParseUploadedFiles
             } else {
                 $subArray = [];
                 $k = array_keys($uploadedFile['error']);
-                foreach ($k as $fileIdx) {
-                    $subArray[$fileIdx]['name'] = $uploadedFile['name'][$fileIdx];
-                    $subArray[$fileIdx]['type'] = $uploadedFile['type'][$fileIdx];
-                    $subArray[$fileIdx]['tmp_name'] = $uploadedFile['tmp_name'][$fileIdx];
-                    $subArray[$fileIdx]['error'] = $uploadedFile['error'][$fileIdx];
-                    $subArray[$fileIdx]['size'] = $uploadedFile['size'][$fileIdx];
+                foreach ($k as $singleK) {
+                    $subArray[$singleK]['name'] = $uploadedFile['name'][$singleK];
+                    $subArray[$singleK]['type'] = $uploadedFile['type'][$singleK];
+                    $subArray[$singleK]['tmp_name'] = $uploadedFile['tmp_name'][$singleK];
+                    $subArray[$singleK]['error'] = $uploadedFile['error'][$singleK];
+                    $subArray[$singleK]['size'] = $uploadedFile['size'][$singleK];
                     $parsed[$field] = $this->parseUploadedFiles($subArray);
                 }
             }

@@ -78,9 +78,7 @@ final class SwooleServerRequestConverter
     /**
      * Get a Uri populated with values from $swooleRequest->server.
      *
-     * @param \Swoole\Http\Request $swooleRequest
      *
-     * @return \Psr\Http\Message\UriInterface
      * @throws \InvalidArgumentException
      */
     private function parseUri(Request $swooleRequest): UriInterface

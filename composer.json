@@ -1,5 +1,6 @@
 {
     "name": "ilexn/swoole-convent-psr7",
+    "description": "convent swoole to psr7 request response",
     "authors": [
         {
             "name": "iLexN",
@@ -43,6 +44,7 @@
         "cs-check": "ecs check src tests",
         "cs-fix": "ecs check src tests --fix",
         "bug-check": "phpstan analyse -l max src",
-        "rector-check": "rector process src --config rector.php --dry-run"
+        "rector-check": "rector process src --config rector.php --dry-run",
+        "rector-fix": "rector process src --config rector.php"
     }
 }

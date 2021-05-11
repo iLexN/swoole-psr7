@@ -15,9 +15,9 @@ final class ParseUriFromSwoole
      */
     private $uri;
 
-    public function __construct(UriFactoryInterface $factory)
+    public function __construct(UriFactoryInterface $uriFactory)
     {
-        $this->uri = $factory->createUri();
+        $this->uri = $uriFactory->createUri();
     }
 
     public function __invoke(Request $swooleRequest): UriInterface
@@ -48,9 +48,13 @@ final class ParseUriFromSwoole
         } elseif (isset($header['host'])) {
             $this->parseHeaderHost($header);
         }
-        if (isset($server['server_port']) && $this->uri->getPort() !== null) {
-            $this->uri = $this->uri->withPort($server['server_port']);
+        if (!isset($server['server_port'])) {
+            return;
         }
+        if ($this->uri->getPort() === null) {
+            return;
+        }
+        $this->uri = $this->uri->withPort($server['server_port']);
     }
 
     private function parseServerHttpHost(array $server): void
@@ -86,8 +90,12 @@ final class ParseUriFromSwoole
                 $this->uri = $this->uri->withQuery($requestUriParts[1]);
             }
         }
-        if (!$hasQuery && isset($server['query_string'])) {
-            $this->uri = $this->uri->withQuery($server['query_string']);
+        if ($hasQuery) {
+            return;
         }
+        if (!isset($server['query_string'])) {
+            return;
+        }
+        $this->uri = $this->uri->withQuery($server['query_string']);
     }
 }
