@@ -70,7 +70,7 @@ class SwooleResponseConverterTest extends TestCase
             ->withAddedHeader('Set-Cookie', 'bar=baz')
             ->withAddedHeader(
                 'Set-Cookie',
-                'baz=qux; Domain=somecompany.co.uk; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT; Secure; HttpOnly'
+                'baz=qux; Domain=somecompany.co.uk; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT; Secure; HttpOnly; SameSite=None'
             );
         $this->emitter->convertFromPsr7Response($response);
         $this->swooleResponse
@@ -80,10 +80,10 @@ class SwooleResponseConverterTest extends TestCase
             ->header('Set-Cookie', Argument::any())
             ->shouldNotBeCalled();
         $this->swooleResponse
-            ->cookie('foo', 'bar', 0, '/', '', false, false)
+            ->cookie('foo', 'bar', 0, '/', '', false, false , '')
             ->shouldHaveBeenCalled();
         $this->swooleResponse
-            ->cookie('bar', 'baz', 0, '/', '', false, false)
+            ->cookie('bar', 'baz', 0, '/', '', false, false, '')
             ->shouldHaveBeenCalled();
         $this->swooleResponse
             ->cookie(
@@ -93,7 +93,8 @@ class SwooleResponseConverterTest extends TestCase
                 '/',
                 'somecompany.co.uk',
                 true,
-                true
+                true,
+                'None'
             )
             ->shouldHaveBeenCalled();
     }
