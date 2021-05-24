@@ -94,7 +94,7 @@ class SwooleResponseConverterTest extends TestCase
                 'somecompany.co.uk',
                 true,
                 true,
-                'None'
+                'None',
             )
             ->shouldHaveBeenCalled();
     }
