@@ -10,7 +10,7 @@
     "license": "MIT",
     "require": {
         "php": ">=8.0",
-        "ext-swoole": "*",
+        "ext-swoole": ">=4.4.6",
         "dflydev/fig-cookies": "^3.0"
     },
     "require-dev": {

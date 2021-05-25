@@ -76,7 +76,9 @@ final class SwooleResponseConverter
                 $setCookie->getPath() ?? '/',
                 $setCookie->getDomain() ?? '',
                 $setCookie->getSecure(),
-                $setCookie->getHttpOnly()
+                $setCookie->getHttpOnly(),
+                // using substr() because FigCookies returns a string that starts with SameSite=
+                $setCookie->getSameSite() === null ? '' : substr($setCookie->getSameSite()->asString(), 9),
             );
         }
     }
@@ -88,10 +90,10 @@ final class SwooleResponseConverter
      */
     private function emitBody(ResponseInterface $response): void
     {
-        $body = $response->getBody();
-        $body->rewind();
-        while (!$body->eof()) {
-            $this->response->write($body->read(static::CHUNK_SIZE));
+        $stream = $response->getBody();
+        $stream->rewind();
+        while (!$stream->eof()) {
+            $this->response->write($stream->read(static::CHUNK_SIZE));
         }
         //$this->swooleResponse->end();
     }
