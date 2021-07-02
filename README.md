@@ -1,12 +1,12 @@
 # SwoolePsr7
 
-[![Latest Stable Version](https://poser.pugx.org/ilexn/swoole-convent-psr7/v/stable)](https://packagist.org/packages/ilexn/swoole-convent-psr7)
-[![Total Downloads](https://poser.pugx.org/ilexn/swoole-convent-psr7/downloads)](https://packagist.org/packages/ilexn/swoole-convent-psr7)
+[![Latest Stable Version](https://poser.pugx.org/ilexn/swoole-convert-psr7/v/stable)](https://packagist.org/packages/ilexn/swoole-convert-psr7)
+[![Total Downloads](https://poser.pugx.org/ilexn/swoole-convert-psr7/downloads)](https://packagist.org/packages/ilexn/swoole-convert-psr7)
 
 ![CI Check](https://github.com/iLexN/swoole-psr7/workflows/CI%20Check/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/iLexN/swoole-psr7/badge.svg?branch=master)](https://coveralls.io/github/iLexN/swoole-psr7?branch=master)
 
-Use any PSR 17 Factory to convent to PSR 7 Response/Request.
+Use any PSR 17 Factory to convert to PSR 7 Response/Request.
 
 **Note: not production use yet. Just for leaning.**
 
@@ -15,8 +15,19 @@ Use any PSR 17 Factory to convent to PSR 7 Response/Request.
 Via Composer
 
 ``` bash
-$ composer require ilexn/swoole-convent-psr7
+$ composer require ilexn/swoole-convert-psr7
 ```
+
+## Upgrade from old package
+Remove the old package
+``` bash
+$ composer remove ilexn/swoole-convent-psr7
+```
+Install the new package
+``` bash
+$ composer require ilexn/swoole-convert-psr7
+```
+Two package using the same namespace, no other code need to change.
 
 ## Usage
 use [Slim 4](https://github.com/slimphp/Slim) and [Nyholm/psr7](https://github.com/Nyholm/psr7) as example.
