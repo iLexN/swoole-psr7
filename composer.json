@@ -1,6 +1,6 @@
 {
-    "name": "ilexn/swoole-convent-psr7",
-    "description": "convent swoole to psr7 request response",
+    "name": "ilexn/swoole-convert-psr7",
+    "description": "convert swoole to psr7 request response",
     "authors": [
         {
             "name": "iLexN",
