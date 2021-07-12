@@ -17,7 +17,7 @@
         "eaglewu/swoole-ide-helper": "dev-master",
         "nyholm/psr7": "^1.4",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpstan/phpstan": "^0.12.90",
+        "phpstan/phpstan": "^0.12.91",
         "phpstan/phpstan-phpunit": "^0.12.20",
         "phpstan/phpstan-strict-rules": "^0.12.10",
         "phpunit/phpunit": "^9.5",
