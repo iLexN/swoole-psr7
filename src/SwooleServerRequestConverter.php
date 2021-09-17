@@ -56,8 +56,10 @@ final class SwooleServerRequestConverter
             if ($serverRequest->hasHeader($name)) {
                 continue;
             }
+
             $serverRequest = $serverRequest->withAddedHeader($name, $value);
         }
+
         return $serverRequest;
     }
 
@@ -72,6 +74,7 @@ final class SwooleServerRequestConverter
         if (is_string($protocol)) {
             return $protocol;
         }
+
         return $defaultProtocol;
     }
 

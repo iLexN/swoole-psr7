@@ -95,6 +95,7 @@ final class SwooleResponseConverter
         while (!$stream->eof()) {
             $this->response->write($stream->read(static::CHUNK_SIZE));
         }
+
         //$this->swooleResponse->end();
     }
 }

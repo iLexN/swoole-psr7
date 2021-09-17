@@ -30,8 +30,10 @@ final class ParseUploadedFiles
                 if (is_array($uploadedFile)) {
                     $parsed[$field] = $this->parseUploadedFiles($uploadedFile);
                 }
+
                 continue;
             }
+
             $parsed[$field] = [];
             if (!is_array($uploadedFile['error'])) {
                 $parsed[$field] = $this->uploadedFileFactory->createUploadedFile(
@@ -54,6 +56,7 @@ final class ParseUploadedFiles
                 }
             }
         }
+
         return $parsed;
     }
 }

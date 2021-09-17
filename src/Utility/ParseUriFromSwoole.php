@@ -48,12 +48,15 @@ final class ParseUriFromSwoole
         } elseif (isset($header['host'])) {
             $this->parseHeaderHost($header);
         }
+
         if (!isset($server['server_port'])) {
             return;
         }
+
         if ($this->uri->getPort() === null) {
             return;
         }
+
         $this->uri = $this->uri->withPort($server['server_port']);
     }
 
@@ -76,6 +79,7 @@ final class ParseUriFromSwoole
         } else {
             $host = $header['host'];
         }
+
         $this->uri = $this->uri->withHost($host);
     }
 
@@ -90,12 +94,15 @@ final class ParseUriFromSwoole
                 $this->uri = $this->uri->withQuery($requestUriParts[1]);
             }
         }
+
         if ($hasQuery) {
             return;
         }
+
         if (!isset($server['query_string'])) {
             return;
         }
+
         $this->uri = $this->uri->withQuery($server['query_string']);
     }
 }
