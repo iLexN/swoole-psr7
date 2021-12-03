@@ -4,7 +4,7 @@ on:
   pull_request: null
   push:
     branches:
-      - master
+      - main
 
 jobs:
   tests:
@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         php: ['8.0','8.1']
+        extension: ['swoole', 'openswoole']
 
     name: PHP ${{ matrix.php }} tests
     steps:
@@ -29,7 +30,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: xdebug
-          extensions: swoole
+          extensions: ${{ matrix.extension }}
 
       - name: Composer install
         run: composer install --ansi
@@ -48,8 +49,9 @@ jobs:
     strategy:
       matrix:
         php: ['8.0','8.1']
+        extension: ['swoole', 'openswoole']
 
-    name: PHP ${{ matrix.php }} code check
+    name: PHP ${{ matrix.php }} with ${{ matrix.extension }}  code check
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -65,7 +67,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: xdebug
-          extensions: swoole
+          extensions: ${{ matrix.extension }}
 
       - name: Composer install
         run: composer install --ansi
