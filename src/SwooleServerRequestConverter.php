@@ -16,11 +16,16 @@ use Swoole\Http\Request;
 
 final class SwooleServerRequestConverter
 {
+
     /**
      * SwooleServerRequestConverter constructor.
      */
-    public function __construct(private ServerRequestFactoryInterface $serverRequestFactory, private UriFactoryInterface $uriFactory, private UploadedFileFactoryInterface $uploadedFileFactory, private StreamFactoryInterface $streamFactory)
-    {
+    public function __construct(
+        private readonly ServerRequestFactoryInterface $serverRequestFactory,
+        private readonly UriFactoryInterface $uriFactory,
+        private readonly UploadedFileFactoryInterface $uploadedFileFactory,
+        private readonly StreamFactoryInterface $streamFactory
+    ) {
     }
 
     public function createFromSwoole(

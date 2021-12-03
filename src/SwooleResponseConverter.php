@@ -10,16 +10,17 @@ use Swoole\Http\Response;
 
 final class SwooleResponseConverter
 {
+
     /**
      * @see https://www.swoole.co.uk/docs/modules/swoole-http-server/methods-properties#swoole-http-response-write
      * @var int
      */
-    public const CHUNK_SIZE = 2097152;
+    public final const CHUNK_SIZE = 2097152;
 
     /**
      * SwooleResponseConverter constructor.
      */
-    public function __construct(private Response $response)
+    public function __construct(private readonly Response $response)
     {
     }
 
@@ -93,7 +94,7 @@ final class SwooleResponseConverter
         $stream = $response->getBody();
         $stream->rewind();
         while (!$stream->eof()) {
-            $this->response->write($stream->read(static::CHUNK_SIZE));
+            $this->response->write($stream->read(self::CHUNK_SIZE));
         }
 
         //$this->swooleResponse->end();
