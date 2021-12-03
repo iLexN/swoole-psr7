@@ -9,8 +9,11 @@ use Psr\Http\Message\UploadedFileFactoryInterface;
 
 final class ParseUploadedFiles
 {
-    public function __construct(private UploadedFileFactoryInterface $uploadedFileFactory, private StreamFactoryInterface $streamFactory)
-    {
+
+    public function __construct(
+        private readonly UploadedFileFactoryInterface $uploadedFileFactory,
+        private readonly StreamFactoryInterface $streamFactory
+    ) {
     }
 
     /**
