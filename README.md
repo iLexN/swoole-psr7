@@ -10,6 +10,8 @@ Use any PSR 17 Factory to convert to PSR 7 Response/Request.
 
 **Note: not production use yet. Just for leaning.**
 
+**Start from 0.5.0, CI test also include swoole and openswoole**
+
 ## Install
 
 Via Composer
