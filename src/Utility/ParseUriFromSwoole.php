@@ -62,7 +62,7 @@ final class ParseUriFromSwoole
 
     private function parseServerHttpHost(array $server): void
     {
-        $hostHeaderParts = explode(':', $server['http_host']);
+        $hostHeaderParts = explode(':', (string) $server['http_host']);
         $this->uri = $this->uri->withHost($hostHeaderParts[0]);
         if (isset($hostHeaderParts[1])) {
             $this->uri = $this->uri->withPort((int)$hostHeaderParts[1]);
@@ -71,8 +71,8 @@ final class ParseUriFromSwoole
 
     private function parseHeaderHost(array $header): void
     {
-        if (str_contains($header['host'], ':')) {
-            [$host, $port] = explode(':', $header['host'], 2);
+        if (str_contains((string) $header['host'], ':')) {
+            [$host, $port] = explode(':', (string) $header['host'], 2);
             if ($port !== '80') {
                 $this->uri = $this->uri->withPort((int)$port);
             }
@@ -87,7 +87,7 @@ final class ParseUriFromSwoole
     {
         $hasQuery = false;
         if (isset($server['request_uri'])) {
-            $requestUriParts = explode('?', $server['request_uri']);
+            $requestUriParts = explode('?', (string) $server['request_uri']);
             $this->uri = $this->uri->withPath($requestUriParts[0]);
             if (isset($requestUriParts[1])) {
                 $hasQuery = true;
