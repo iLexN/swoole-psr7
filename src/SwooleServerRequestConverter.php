@@ -48,13 +48,15 @@ final class SwooleServerRequestConverter
         // swoole $swooleRequest->rawContent return string
         /** @var string $content */
         $content = is_string($swooleRequest->rawContent()) ? $swooleRequest->rawContent() : '';
+        $stream = $this->streamFactory->createStream($content);
+        $stream->rewind();
 
         return $serverRequest
             ->withProtocolVersion($this->parseProtocol($server))
             ->withCookieParams($swooleRequest->cookie ?? [])
             ->withQueryParams($swooleRequest->get ?? [])
             ->withParsedBody($swooleRequest->post ?? [])
-            ->withBody($this->streamFactory->createStream($content))
+            ->withBody($stream)
             ->withUploadedFiles($this->parseUploadedFiles($swooleRequest->files ?? []));
     }
 
