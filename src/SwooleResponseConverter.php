@@ -15,7 +15,7 @@ final class SwooleResponseConverter
      * @see https://www.swoole.co.uk/docs/modules/swoole-http-server/methods-properties#swoole-http-response-write
      * @var int
      */
-    public final const CHUNK_SIZE = 2097152;
+    public const CHUNK_SIZE = 2097152;
 
     /**
      * SwooleResponseConverter constructor.
