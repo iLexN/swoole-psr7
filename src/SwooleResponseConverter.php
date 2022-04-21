@@ -35,7 +35,6 @@ final class SwooleResponseConverter
     public function send(ResponseInterface $response): void
     {
         $this->convertFromPsr7Response($response);
-        $this->response->end();
     }
 
     /**
@@ -92,11 +91,23 @@ final class SwooleResponseConverter
     private function emitBody(ResponseInterface $response): void
     {
         $stream = $response->getBody();
-        $stream->rewind();
+
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        if (! $stream->isReadable()) {
+            $this->response->end((string) $stream);
+            return;
+        }
+
+        if ($stream->getSize() !== null && $stream->getSize() <= self::CHUNK_SIZE) {
+            $this->response->end($stream->getContents());
+            return;
+        }
+
         while (!$stream->eof()) {
             $this->response->write($stream->read(self::CHUNK_SIZE));
         }
-
-        //$this->swooleResponse->end();
     }
 }

@@ -140,9 +140,6 @@ class SwooleResponseConverterTest extends TestCase
 
         $this->swooleResponse
             ->method('write');
-        $this->swooleResponse
-            ->expects($this->once())
-            ->method('end');
 
         $this->emitter->send($response);
     }
