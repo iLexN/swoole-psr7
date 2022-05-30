@@ -81,7 +81,7 @@ final class SwooleServerRequestConverter
         $protocol = isset($server['server_protocol']) ? \str_replace(
             'HTTP/',
             '',
-            $server['server_protocol']
+            (string) $server['server_protocol']
         ) : $defaultProtocol;
         if (is_string($protocol)) {
             return $protocol;
