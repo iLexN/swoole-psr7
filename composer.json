@@ -21,7 +21,7 @@
         "phpunit/phpunit": "^9.5",
         "rector/rector": "^0.12.23",
         "roave/security-advisories": "dev-latest",
-        "symfony/var-dumper": "^6.0"
+        "symfony/var-dumper": "^6.1"
     },
     "suggest": {
         "ext-openswoole": "This package requires at least one of Open Swoole or Swoole",
