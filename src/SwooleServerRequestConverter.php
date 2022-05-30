@@ -78,16 +78,11 @@ final class SwooleServerRequestConverter
     private function parseProtocol(array $server): string
     {
         $defaultProtocol = '1.1';
-        $protocol = isset($server['server_protocol']) ? \str_replace(
+        return isset($server['server_protocol']) ? \str_replace(
             'HTTP/',
             '',
             (string) $server['server_protocol']
         ) : $defaultProtocol;
-        if (is_string($protocol)) {
-            return $protocol;
-        }
-
-        return $defaultProtocol;
     }
 
     /**
