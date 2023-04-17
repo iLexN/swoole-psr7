@@ -78,7 +78,7 @@ final class SwooleResponseConverter
                 $setCookie->getSecure(),
                 $setCookie->getHttpOnly(),
                 // using substr() because FigCookies returns a string that starts with SameSite=
-                $setCookie->getSameSite() === null ? '' : substr($setCookie->getSameSite()->asString(), 9),
+                $setCookie->getSameSite() instanceof \Dflydev\FigCookies\Modifier\SameSite ? substr($setCookie->getSameSite()->asString(), 9) : '',
             );
         }
     }
