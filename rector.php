@@ -13,7 +13,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODING_STYLE,
         SetList::PHP_80,
         SetList::PHP_81,
-        SetList::PSR_4,
+        //SetList::PSR_4,
         SetList::EARLY_RETURN,
         SetList::NAMING,
     ]);
