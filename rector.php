@@ -19,8 +19,8 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
 
-    $rectorConfig->skip([
-        Rector\Php80\Rector\FunctionLike\UnionTypesRector::class
-    ]);
+    // $rectorConfig->skip([
+    //     Rector\Php80\Rector\FunctionLike\UnionTypesRector::class
+    // ]);
 
 };
