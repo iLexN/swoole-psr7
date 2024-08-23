@@ -19,7 +19,7 @@
         "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-strict-rules": "^1.6",
         "phpunit/phpunit": "^9.5",
-        "rector/rector": "^1.2.2",
+        "rector/rector": "^1.2.3",
         "roave/security-advisories": "dev-latest",
         "symfony/var-dumper": "^6.4"
     },
