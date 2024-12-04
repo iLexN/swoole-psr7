@@ -20,8 +20,7 @@
         "phpstan/phpstan-strict-rules": "^1.6",
         "phpunit/phpunit": "^9.5",
         "rector/rector": "^1.2.10",
-        "roave/security-advisories": "dev-latest",
-        "symfony/var-dumper": "^6.4"
+        "roave/security-advisories": "dev-latest"
     },
     "suggest": {
         "ext-openswoole": "This package requires at least one of Open Swoole or Swoole",
