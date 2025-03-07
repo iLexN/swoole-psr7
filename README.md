@@ -3,7 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/ilexn/swoole-convert-psr7/v/stable)](https://packagist.org/packages/ilexn/swoole-convert-psr7)
 [![Total Downloads](https://poser.pugx.org/ilexn/swoole-convert-psr7/downloads)](https://packagist.org/packages/ilexn/swoole-convert-psr7)
 
-![CI Check](https://github.com/iLexN/swoole-psr7/workflows/CI%20Check/badge.svg)
+[![CI Check](https://github.com/iLexN/swoole-psr7/actions/workflows/ci.yaml/badge.svg)](https://github.com/iLexN/swoole-psr7/actions/workflows/ci.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/iLexN/swoole-psr7/badge.svg?branch=main)](https://coveralls.io/github/iLexN/swoole-psr7?branch=main)
 
 Use any PSR 17 Factory to convert to PSR 7 Response/Request.
