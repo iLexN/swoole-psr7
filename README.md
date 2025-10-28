@@ -6,6 +6,8 @@
 ![CI Check](https://github.com/iLexN/swoole-psr7/workflows/CI%20Check/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/iLexN/swoole-psr7/badge.svg?branch=main)](https://coveralls.io/github/iLexN/swoole-psr7?branch=main)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/iLexN/swoole-psr7)
+
 Use any PSR 17 Factory to convert to PSR 7 Response/Request.
 
 **Note: not production use yet. Just for leaning.**
