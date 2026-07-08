@@ -214,13 +214,13 @@ class ParseUploadedFilesTest extends TestCase
                 'type' => [0 => 'image/jpeg'],
                 'tmp_name' => [0 => '/tmp/php1'],
                 'error' => [0 => 0],
-                'size' => [0 => 1000],
+                'size' => [1 => 1000],
             ],
         ];
 
         $uploadedFiles = $object->parseUploadedFiles($files);
         self::assertArrayHasKey('uploaded_file', $uploadedFiles);
-        self::assertInstanceOf(UploadedFileInterface::class, $uploadedFiles['uploaded_file'][0]);
+        self::assertArrayNotHasKey(0, $uploadedFiles['uploaded_file']);
     }
 
     public function testParseEmptyArray(): void
@@ -253,5 +253,141 @@ class ParseUploadedFilesTest extends TestCase
             $uploadedFiles['uploaded_file'][0]
         );
         self::assertEquals(1000, $uploadedFiles['uploaded_file'][0]->getSize());
+    }
+
+    public function testParseFileWithNameNotArraySkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => 'not an array',
+                'type' => [0 => 'image/jpeg'],
+                'tmp_name' => [0 => '/tmp/php1'],
+                'error' => [0 => 0],
+                'size' => [0 => 1000],
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayNotHasKey('uploaded_file', $uploadedFiles);
+    }
+
+    public function testParseFileWithTypeNotArraySkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => [0 => 'foo.jpg'],
+                'type' => 'not an array',
+                'tmp_name' => [0 => '/tmp/php1'],
+                'error' => [0 => 0],
+                'size' => [0 => 1000],
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayNotHasKey('uploaded_file', $uploadedFiles);
+    }
+
+    public function testParseFileWithTmpNameNotArraySkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => [0 => 'foo.jpg'],
+                'type' => [0 => 'image/jpeg'],
+                'tmp_name' => 'not an array',
+                'error' => [0 => 0],
+                'size' => [0 => 1000],
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayNotHasKey('uploaded_file', $uploadedFiles);
+    }
+
+    public function testParseFileWithSizeNotArraySkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => [0 => 'foo.jpg'],
+                'type' => [0 => 'image/jpeg'],
+                'tmp_name' => [0 => '/tmp/php1'],
+                'error' => [0 => 0],
+                'size' => 'not an array',
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayNotHasKey('uploaded_file', $uploadedFiles);
+    }
+
+    public function testParseFileWithMissingKeyNameSkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => [1 => 'foo.jpg'],
+                'type' => [0 => 'image/jpeg'],
+                'tmp_name' => [0 => '/tmp/php1'],
+                'error' => [0 => 0],
+                'size' => [0 => 1000],
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayHasKey('uploaded_file', $uploadedFiles);
+        self::assertArrayNotHasKey(0, $uploadedFiles['uploaded_file']);
+    }
+
+    public function testParseFileWithMissingKeyTypeSkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => [0 => 'foo.jpg'],
+                'type' => [1 => 'image/jpeg'],
+                'tmp_name' => [0 => '/tmp/php1'],
+                'error' => [0 => 0],
+                'size' => [0 => 1000],
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayHasKey('uploaded_file', $uploadedFiles);
+        self::assertArrayNotHasKey(0, $uploadedFiles['uploaded_file']);
+    }
+
+    public function testParseFileWithMissingKeyTmpNameSkipsEntry(): void
+    {
+        $factory = new Psr17Factory();
+        $object = new ParseUploadedFiles($factory, $factory);
+
+        $files = [
+            'uploaded_file' => [
+                'name' => [0 => 'foo.jpg'],
+                'type' => [0 => 'image/jpeg'],
+                'tmp_name' => [1 => '/tmp/php1'],
+                'error' => [0 => 0],
+                'size' => [0 => 1000],
+            ],
+        ];
+
+        $uploadedFiles = $object->parseUploadedFiles($files);
+        self::assertArrayHasKey('uploaded_file', $uploadedFiles);
+        self::assertArrayNotHasKey(0, $uploadedFiles['uploaded_file']);
     }
 }

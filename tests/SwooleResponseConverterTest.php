@@ -335,4 +335,29 @@ class SwooleResponseConverterTest extends TestCase
 
         $this->emitter->send($response);
     }
+
+    public function testEmitWithReadableStreamSmallSize(): void
+    {
+        $stream = $this->createStub(Stream::class);
+        $stream->method('isSeekable')->willReturn(true);
+        $stream->method('isReadable')->willReturn(true);
+        $stream->method('getSize')->willReturn(100);
+        $stream->method('getContents')->willReturn('small stream content');
+
+        $response = (new Response())
+            ->withStatus(200)
+            ->withBody($stream);
+
+        $this->swooleResponse
+            ->expects($this->once())
+            ->method('status')
+            ->with($this->equalTo(200));
+
+        $this->swooleResponse
+            ->expects($this->once())
+            ->method('end')
+            ->with('small stream content');
+
+        $this->emitter->send($response);
+    }
 }

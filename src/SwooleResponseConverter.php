@@ -70,10 +70,10 @@ final readonly class SwooleResponseConverter
     /**
      * Extract SameSite value from FigCookies SameSite object.
      *
-     * @param SameSite|string|null $sameSite The SameSite object, string, or null
+     * @param SameSite|null $sameSite The SameSite object, string, or null
      * @return string The SameSite value (e.g., "Lax")
      */
-    private function extractSameSiteValue(SameSite|string|null $sameSite): string
+    private function extractSameSiteValue(?SameSite $sameSite): string
     {
         if ($sameSite instanceof SameSite) {
             $sameSiteString = $sameSite->asString();
@@ -81,12 +81,6 @@ final readonly class SwooleResponseConverter
             if (str_starts_with($sameSiteString, $prefix)) {
                 return substr($sameSiteString, strlen($prefix));
             }
-
-            return $sameSiteString;
-        }
-
-        if (is_string($sameSite)) {
-            return $sameSite;
         }
 
         return '';

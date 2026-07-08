@@ -270,4 +270,32 @@ class ParseUriFromSwooleTest extends TestCase
 
         self::assertEquals('', $uri->getHost());
     }
+
+    public function testInvokeWithMalformedIPv6NoClosingBracket(): void
+    {
+        $factory = new Psr17Factory();
+        $testObject = new ParseUriFromSwoole($factory);
+
+        $request = SwooleRequestFactory::create();
+        $request->server['http_host'] = '[::1';
+
+        $uri = $testObject($request);
+
+        self::assertEquals('[', $uri->getHost());
+    }
+
+    public function testInvokeWithHostTrailingColon(): void
+    {
+        $factory = new Psr17Factory();
+        $testObject = new ParseUriFromSwoole($factory);
+
+        $request = SwooleRequestFactory::create();
+        $request->server['http_host'] = 'example.com:';
+        unset($request->server['server_port']);
+
+        $uri = $testObject($request);
+
+        self::assertEquals('example.com', $uri->getHost());
+        self::assertNull($uri->getPort());
+    }
 }
