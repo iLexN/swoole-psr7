@@ -7,7 +7,6 @@ namespace Ilex\SwoolePsr7\Tests;
 use Ilex\SwoolePsr7\SwooleResponseConverter;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Swoole\Http\Response as SwooleHttpResponse;
 
 class SwooleResponseConverterTest extends TestCase
@@ -52,19 +51,19 @@ class SwooleResponseConverterTest extends TestCase
             ->withHeader('Content-Type', 'text/plain')
             ->withHeader('Content-Length', '256');
 
+        $calls = [];
         $this->swooleResponse
             ->expects($this->exactly(2))
             ->method('header')
-            ->withConsecutive([
-                $this->equalTo('Content-Type'),
-                $this->equalTo('text/plain'),
-            ], [
-                $this->equalTo('Content-Length'),
-                $this->equalTo('256'),
-            ]);
+            ->willReturnCallback(function (string $name, string $value) use (&$calls) {
+                $calls[] = [$name, $value];
+                return true;
+            });
 
         $this->emitter->convertFromPsr7Response($response);
 
+        $this->assertEquals(['Content-Type', 'text/plain'], $calls[0]);
+        $this->assertEquals(['Content-Length', '256'], $calls[1]);
     }
 
     public function testMultipleSetCookieHeaders(): void
@@ -82,41 +81,21 @@ class SwooleResponseConverterTest extends TestCase
             ->expects($this->once())
             ->method('status')
             ->with($this->equalTo(200));
+
+        $calls = [];
         $this->swooleResponse
             ->expects($this->exactly(3))
             ->method('cookie')
-            ->withConsecutive([
-                $this->equalTo('foo'),
-                $this->equalTo('bar'),
-                $this->equalTo(0),
-                $this->equalTo('/'),
-                $this->equalTo(''),
-                $this->equalTo(false),
-                $this->equalTo(false),
-                $this->equalTo(''),
-            ], [
-                $this->equalTo('bar'),
-                $this->equalTo('baz'),
-                $this->equalTo(0),
-                $this->equalTo('/'),
-                $this->equalTo(''),
-                $this->equalTo(false),
-                $this->equalTo(false),
-                $this->equalTo(''),
-            ],[
-
-                $this->equalTo('baz'),
-                $this->equalTo('qux'),
-                $this->equalTo(1623233894),
-                $this->equalTo('/'),
-                $this->equalTo('somecompany.co.uk'),
-                $this->equalTo(true),
-                $this->equalTo(true),
-                $this->equalTo('None'),
-            ]);
-
+            ->willReturnCallback(function (string $name, string $value, int $expires, string $path, string $domain, bool $secure, bool $httpOnly, string $sameSite) use (&$calls) {
+                $calls[] = [$name, $value, $expires, $path, $domain, $secure, $httpOnly, $sameSite];
+                return true;
+            });
 
         $this->emitter->convertFromPsr7Response($response);
+
+        $this->assertEquals(['foo', 'bar', 0, '/', '', false, false, ''], $calls[0]);
+        $this->assertEquals(['bar', 'baz', 0, '/', '', false, false, ''], $calls[1]);
+        $this->assertEquals(['baz', 'qux', 1623233894, '/', 'somecompany.co.uk', true, true, 'None'], $calls[2]);
     }
 
     public function testEmitWithBigContentBody(): void

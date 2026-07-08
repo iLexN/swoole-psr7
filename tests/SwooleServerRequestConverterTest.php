@@ -32,22 +32,18 @@ class SwooleServerRequestConverterTest extends TestCase
         $reflection = new ReflectionClass($testClass);
 
         $property = $reflection->getProperty('serverRequestFactory');
-        $property->setAccessible(true);
         $serverRequestFactory = $property->getValue($testClass);
         self::assertInstanceOf(ServerRequestFactoryInterface::class, $serverRequestFactory);
 
         $property = $reflection->getProperty('uriFactory');
-        $property->setAccessible(true);
         $uriFactory = $property->getValue($testClass);
         self::assertInstanceOf(UriFactoryInterface::class, $uriFactory);
 
         $property = $reflection->getProperty('uploadedFileFactory');
-        $property->setAccessible(true);
         $uploadedFileFactory = $property->getValue($testClass);
         self::assertInstanceOf(UploadedFileFactoryInterface::class, $uploadedFileFactory);
 
         $property = $reflection->getProperty('streamFactory');
-        $property->setAccessible(true);
         $streamFactory = $property->getValue($testClass);
         self::assertInstanceOf(StreamFactoryInterface::class, $streamFactory);
     }
@@ -62,7 +58,7 @@ class SwooleServerRequestConverterTest extends TestCase
             $factory
         );
 
-        $swooleRequest = $this->createMock(Request::class);
+        $swooleRequest = $this->createStub(Request::class);
         $swooleRequest->server = [
             'path_info' => '/',
             'remote_port' => 45314,

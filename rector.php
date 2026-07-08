@@ -11,16 +11,13 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
         SetList::CODING_STYLE,
-        SetList::PHP_80,
-        SetList::PHP_81,
+        SetList::PHP_82,
+        SetList::PHP_83,
+        SetList::PHP_84,
+        SetList::PHP_85,
         //SetList::PSR_4,
         SetList::EARLY_RETURN,
         SetList::NAMING,
     ]);
-
-
-    // $rectorConfig->skip([
-    //     Rector\Php80\Rector\FunctionLike\UnionTypesRector::class
-    // ]);
 
 };

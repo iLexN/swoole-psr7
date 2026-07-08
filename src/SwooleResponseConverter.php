@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Ilex\SwoolePsr7;
 
+use Dflydev\FigCookies\Modifier\SameSite;
 use Dflydev\FigCookies\SetCookies;
 use Psr\Http\Message\ResponseInterface;
 use Swoole\Http\Response;
 
-final class SwooleResponseConverter
+final readonly class SwooleResponseConverter
 {
 
     /**
      * @see https://www.swoole.co.uk/docs/modules/swoole-http-server/methods-properties#swoole-http-response-write
-     * @var int
      */
-    public const CHUNK_SIZE = 2097152;
+    public const int CHUNK_SIZE = 2097152;
 
     /**
      * SwooleResponseConverter constructor.
      */
-    public function __construct(private readonly Response $response)
+    public function __construct(private Response $response)
     {
     }
 
@@ -37,21 +37,11 @@ final class SwooleResponseConverter
         $this->convertFromPsr7Response($response);
     }
 
-    /**
-     * Emit the status code
-     *
-     *
-     */
     private function emitStatusCode(ResponseInterface $response): void
     {
         $this->response->status($response->getStatusCode());
     }
 
-    /**
-     * Emit the headers
-     *
-     *
-     */
     private function emitHeaders(ResponseInterface $response): void
     {
         foreach ($response->withoutHeader(SetCookies::SET_COOKIE_HEADER)
@@ -61,11 +51,6 @@ final class SwooleResponseConverter
         }
     }
 
-    /**
-     * Emit the cookies
-     *
-     *
-     */
     private function emitCookies(ResponseInterface $response): void
     {
         foreach (SetCookies::fromResponse($response)->getAll() as $setCookie) {
@@ -77,37 +62,61 @@ final class SwooleResponseConverter
                 $setCookie->getDomain() ?? '',
                 $setCookie->getSecure(),
                 $setCookie->getHttpOnly(),
-                // using substr() because FigCookies returns a string that starts with SameSite=
-                $setCookie->getSameSite() instanceof \Dflydev\FigCookies\Modifier\SameSite ? substr($setCookie->getSameSite()->asString(), 9) : '',
+                $this->extractSameSiteValue($setCookie->getSameSite()),
             );
         }
     }
 
     /**
-     * Emit the message body.
+     * Extract SameSite value from FigCookies SameSite object.
      *
-     *
+     * @param SameSite|string|null $sameSite The SameSite object, string, or null
+     * @return string The SameSite value (e.g., "Lax")
      */
+    private function extractSameSiteValue(SameSite|string|null $sameSite): string
+    {
+        if ($sameSite instanceof SameSite) {
+            $sameSiteString = $sameSite->asString();
+            $prefix = 'SameSite=';
+            if (str_starts_with($sameSiteString, $prefix)) {
+                return substr($sameSiteString, strlen($prefix));
+            }
+
+            return $sameSiteString;
+        }
+
+        if (is_string($sameSite)) {
+            return $sameSite;
+        }
+
+        return '';
+    }
+
     private function emitBody(ResponseInterface $response): void
     {
         $stream = $response->getBody();
 
-        if ($stream->isSeekable()) {
-            $stream->rewind();
-        }
+        try {
+            if ($stream->isSeekable()) {
+                $stream->rewind();
+            }
 
-        if (! $stream->isReadable()) {
-            $this->response->end((string) $stream);
-            return;
-        }
+            if (! $stream->isReadable()) {
+                $this->response->end((string) $stream);
+                return;
+            }
 
-        if ($stream->getSize() !== null && $stream->getSize() <= self::CHUNK_SIZE) {
-            $this->response->end($stream->getContents());
-            return;
-        }
+            if ($stream->getSize() !== null && $stream->getSize() <= self::CHUNK_SIZE) {
+                $this->response->end($stream->getContents());
+                return;
+            }
 
-        while (!$stream->eof()) {
-            $this->response->write($stream->read(self::CHUNK_SIZE));
+            while (!$stream->eof()) {
+                $this->response->write($stream->read(self::CHUNK_SIZE));
+            }
+        } catch (\Exception $exception) {
+            $stream->close();
+            $this->response->end('');
         }
     }
 }

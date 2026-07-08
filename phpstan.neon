@@ -2,7 +2,6 @@ parameters:
 	level: max
 	paths:
 		- src
-	checkMissingIterableValueType: false
 
 includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon

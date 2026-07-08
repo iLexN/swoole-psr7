@@ -14,25 +14,24 @@ use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use Swoole\Http\Request;
 
-final class SwooleServerRequestConverter
+final readonly class SwooleServerRequestConverter
 {
 
-    /**
-     * SwooleServerRequestConverter constructor.
-     */
     public function __construct(
-        private readonly ServerRequestFactoryInterface $serverRequestFactory,
-        private readonly UriFactoryInterface $uriFactory,
-        private readonly UploadedFileFactoryInterface $uploadedFileFactory,
-        private readonly StreamFactoryInterface $streamFactory
+        private ServerRequestFactoryInterface $serverRequestFactory,
+        private UriFactoryInterface $uriFactory,
+        private UploadedFileFactoryInterface $uploadedFileFactory,
+        private StreamFactoryInterface $streamFactory
     ) {
     }
 
     public function createFromSwoole(
         Request $swooleRequest
     ): ServerRequestInterface {
-        $server = $swooleRequest->server;
+        /** @var array<string, string> $server */
+        $server = $swooleRequest->server ?? [];
         $method = $server['request_method'] ?? 'GET';
+        /** @var array<string, string> $headers */
         $headers = $swooleRequest->header ?? [];
         $uri = $this->parseUri($swooleRequest);
 
@@ -44,22 +43,32 @@ final class SwooleServerRequestConverter
 
         $serverRequest = $this->addHeaders($headers, $serverRequest);
 
-        // openswoole $swooleRequest->rawContent return bool|string
-        // swoole $swooleRequest->rawContent return string
-        /** @var string $content */
+        // OpenSwoole returns bool|string, Swoole returns string from rawContent()
         $content = is_string($swooleRequest->rawContent()) ? $swooleRequest->rawContent() : '';
         $stream = $this->streamFactory->createStream($content);
         $stream->rewind();
 
+        /** @var array<string, string> $cookie */
+        $cookie = $swooleRequest->cookie ?? [];
+        /** @var array<string, string> $queryParams */
+        $queryParams = $swooleRequest->get ?? [];
+        /** @var array<string, string> $parsedBody */
+        $parsedBody = $swooleRequest->post ?? [];
+        /** @var array<string, mixed> $files */
+        $files = $swooleRequest->files ?? [];
+
         return $serverRequest
             ->withProtocolVersion($this->parseProtocol($server))
-            ->withCookieParams($swooleRequest->cookie ?? [])
-            ->withQueryParams($swooleRequest->get ?? [])
-            ->withParsedBody($swooleRequest->post ?? [])
+            ->withCookieParams($cookie)
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody)
             ->withBody($stream)
-            ->withUploadedFiles($this->parseUploadedFiles($swooleRequest->files ?? []));
+            ->withUploadedFiles($this->parseUploadedFiles($files));
     }
 
+    /**
+     * @param array<string, string> $headers
+     */
     private function addHeaders(
         array $headers,
         ServerRequestInterface $serverRequest
@@ -75,22 +84,19 @@ final class SwooleServerRequestConverter
         return $serverRequest;
     }
 
+    /**
+     * @param array<string, string> $server
+     */
     private function parseProtocol(array $server): string
     {
         $defaultProtocol = '1.1';
-        return isset($server['server_protocol']) ? \str_replace(
+        return isset($server['server_protocol']) ? str_replace(
             'HTTP/',
             '',
-            (string) $server['server_protocol']
+            $server['server_protocol']
         ) : $defaultProtocol;
     }
 
-    /**
-     * Get a Uri populated with values from $swooleRequest->server.
-     *
-     *
-     * @throws \InvalidArgumentException
-     */
     private function parseUri(Request $swooleRequest): UriInterface
     {
         return (new ParseUriFromSwoole($this->uriFactory))($swooleRequest);
@@ -100,16 +106,16 @@ final class SwooleServerRequestConverter
      * Parse a non-normalized, i.e. $_FILES superglobal, tree of uploaded file
      * data.
      *
-     * @param array $uploadedFiles The non-normalized tree of uploaded file
+     * @param array<int|string, mixed> $uploadedFiles The non-normalized tree of uploaded file
      *     data.
      *
-     * @return array A normalized tree of UploadedFile instances.
+     * @return array<int|string, mixed> A normalized tree of UploadedFile instances.
      */
     private function parseUploadedFiles(array $uploadedFiles): array
     {
-        return (new ParseUploadedFiles(
+        return new ParseUploadedFiles(
             $this->uploadedFileFactory,
             $this->streamFactory
-        ))->parseUploadedFiles($uploadedFiles);
+        )->parseUploadedFiles($uploadedFiles);
     }
 }

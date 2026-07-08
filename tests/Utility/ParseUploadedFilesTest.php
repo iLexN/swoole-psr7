@@ -18,11 +18,9 @@ class ParseUploadedFilesTest extends TestCase
         $object = new ParseUploadedFiles($factory, $factory);
         $reflection = new ReflectionClass($object);
         $property = $reflection->getProperty('uploadedFileFactory');
-        $property->setAccessible(true);
         $uploadedFileFactory = $property->getValue($object);
 
         $property2 = $reflection->getProperty('streamFactory');
-        $property2->setAccessible(true);
         $streamFactory = $property2->getValue($object);
 
         self::assertEquals($uploadedFileFactory, $factory);

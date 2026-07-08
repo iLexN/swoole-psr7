@@ -19,7 +19,6 @@ class ParseUriFromSwooleTest extends TestCase
         $object = new ParseUriFromSwoole($factory);
         $reflection = new ReflectionClass($object);
         $property = $reflection->getProperty('uri');
-        $property->setAccessible(true);
         $uri = $property->getValue($object);
 
         self::assertInstanceOf(UriInterface::class, $uri);
