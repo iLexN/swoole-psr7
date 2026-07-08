@@ -128,4 +128,176 @@ class SwooleServerRequestConverterTest extends TestCase
         $this->assertInstanceOf(StreamInterface::class, $body);
         $this->assertEquals('this is the content', (string) $body);
     }
+
+    public function testCreateFromSwooleWithEmptyArrays(): void
+    {
+        $factory = new Psr17Factory();
+        $testClass = new SwooleServerRequestConverter(
+            $factory,
+            $factory,
+            $factory,
+            $factory
+        );
+
+        $swooleRequest = $this->createStub(Request::class);
+        $swooleRequest->server = [];
+        $swooleRequest->get = [];
+        $swooleRequest->post = [];
+        $swooleRequest->cookie = [];
+        $swooleRequest->files = [];
+        $swooleRequest->header = [];
+        $swooleRequest->method('rawContent')->willReturn('');
+
+        $request = $testClass->createFromSwoole($swooleRequest);
+
+        $this->assertInstanceOf(ServerRequestInterface::class, $request);
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('1.1', $request->getProtocolVersion());
+        $this->assertEquals([], $request->getQueryParams());
+        $this->assertEquals([], $request->getParsedBody());
+        $this->assertEquals([], $request->getCookieParams());
+        $this->assertEquals([], $request->getUploadedFiles());
+    }
+
+    public function testCreateFromSwooleWithMissingServerKeys(): void
+    {
+        $factory = new Psr17Factory();
+        $testClass = new SwooleServerRequestConverter(
+            $factory,
+            $factory,
+            $factory,
+            $factory
+        );
+
+        $swooleRequest = $this->createStub(Request::class);
+        $swooleRequest->server = [
+            'request_uri' => '/test',
+        ];
+        $swooleRequest->get = [];
+        $swooleRequest->post = [];
+        $swooleRequest->cookie = [];
+        $swooleRequest->files = [];
+        $swooleRequest->header = [];
+        $swooleRequest->method('rawContent')->willReturn('');
+
+        $request = $testClass->createFromSwoole($swooleRequest);
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('1.1', $request->getProtocolVersion());
+    }
+
+    public function testCreateFromSwooleWithOpenSwooleBoolReturn(): void
+    {
+        $factory = new Psr17Factory();
+        $testClass = new SwooleServerRequestConverter(
+            $factory,
+            $factory,
+            $factory,
+            $factory
+        );
+
+        $swooleRequest = $this->createStub(Request::class);
+        $swooleRequest->server = [
+            'request_method' => 'POST',
+            'request_uri' => '/test',
+        ];
+        $swooleRequest->get = [];
+        $swooleRequest->post = [];
+        $swooleRequest->cookie = [];
+        $swooleRequest->files = [];
+        $swooleRequest->header = [];
+        $swooleRequest->method('rawContent')->willReturn(false);
+
+        $request = $testClass->createFromSwoole($swooleRequest);
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('', (string) $request->getBody());
+    }
+
+    public function testCreateFromSwooleWithDefaultProtocol(): void
+    {
+        $factory = new Psr17Factory();
+        $testClass = new SwooleServerRequestConverter(
+            $factory,
+            $factory,
+            $factory,
+            $factory
+        );
+
+        $swooleRequest = $this->createStub(Request::class);
+        $swooleRequest->server = [
+            'request_method' => 'GET',
+            'request_uri' => '/test',
+        ];
+        $swooleRequest->get = [];
+        $swooleRequest->post = [];
+        $swooleRequest->cookie = [];
+        $swooleRequest->files = [];
+        $swooleRequest->header = [];
+        $swooleRequest->method('rawContent')->willReturn('');
+
+        $request = $testClass->createFromSwoole($swooleRequest);
+
+        $this->assertEquals('1.1', $request->getProtocolVersion());
+    }
+
+    public function testCreateFromSwooleWithDuplicateHeaders(): void
+    {
+        $factory = new Psr17Factory();
+        $testClass = new SwooleServerRequestConverter(
+            $factory,
+            $factory,
+            $factory,
+            $factory
+        );
+
+        $swooleRequest = $this->createStub(Request::class);
+        $swooleRequest->server = [
+            'request_method' => 'GET',
+            'request_uri' => '/test',
+            'http_host' => 'example.com',
+        ];
+        $swooleRequest->get = [];
+        $swooleRequest->post = [];
+        $swooleRequest->cookie = [];
+        $swooleRequest->files = [];
+        $swooleRequest->header = [
+            'host' => 'example.com',
+            'content-type' => 'application/json',
+        ];
+        $swooleRequest->method('rawContent')->willReturn('');
+
+        $request = $testClass->createFromSwoole($swooleRequest);
+
+        $this->assertEquals('example.com', $request->getHeaderLine('Host'));
+        $this->assertEquals('application/json', $request->getHeaderLine('Content-Type'));
+    }
+
+    public function testCreateFromSwooleWithHttps(): void
+    {
+        $factory = new Psr17Factory();
+        $testClass = new SwooleServerRequestConverter(
+            $factory,
+            $factory,
+            $factory,
+            $factory
+        );
+
+        $swooleRequest = $this->createStub(Request::class);
+        $swooleRequest->server = [
+            'request_method' => 'GET',
+            'request_uri' => '/test',
+            'https' => 'on',
+        ];
+        $swooleRequest->get = [];
+        $swooleRequest->post = [];
+        $swooleRequest->cookie = [];
+        $swooleRequest->files = [];
+        $swooleRequest->header = [];
+        $swooleRequest->method('rawContent')->willReturn('');
+
+        $request = $testClass->createFromSwoole($swooleRequest);
+
+        $this->assertEquals('https', $request->getUri()->getScheme());
+    }
 }
