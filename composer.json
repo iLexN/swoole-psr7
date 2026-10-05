@@ -18,7 +18,7 @@
         "phpstan/phpstan": "^2.2",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^13.3",
+        "phpunit/phpunit": "^13.4",
         "rector/rector": "^2.6",
         "roave/security-advisories": "dev-latest"
     },
