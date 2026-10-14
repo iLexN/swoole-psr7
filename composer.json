@@ -19,7 +19,7 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.1",
         "phpunit/phpunit": "^13.4",
-        "rector/rector": "^2.6",
+        "rector/rector": "^2.7",
         "roave/security-advisories": "dev-latest"
     },
     "suggest": {
