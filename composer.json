@@ -15,7 +15,7 @@
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
         "nyholm/psr7": "^1.8",
-        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan": "^2.3",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.1",
         "phpunit/phpunit": "^13.4",
